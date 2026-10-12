@@ -3,6 +3,5 @@ backend-sync/db.json
 backend-sync/serviceAccountKey.json
 
 node_modules/
-firebase-config.js
 .env
 serviceAccount*.json
