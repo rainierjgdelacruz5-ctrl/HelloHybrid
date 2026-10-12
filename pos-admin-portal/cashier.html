@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="/hello-kitty.png">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hello Kaffi · Cashier</title><link rel="stylesheet" href="style.css">
+</head>
+<body data-page="cashier">
+<header class="bar">
+  <h2>Hello Kaffi · Cashier</h2><span id="live" class="pill">Connecting…</span>
+  <nav id="paneNav" class="panenav" aria-label="Screens">
+    <button type="button" data-pane="sell" class="t-only">Sell</button>
+    <button type="button" data-pane="menu" class="m-only">Menu</button>
+    <button type="button" data-pane="sale" class="m-only">Sale <b id="saleBadge" class="badge" hidden></b></button>
+    <button type="button" data-pane="orders">Orders <b id="ordBadge" class="badge" hidden></b></button>
+  </nav>
+  <span class="grow"></span><span id="who"></span><button id="logout" class="btn ghost sm">Sign out</button>
+</header>
+
+<div class="pos" id="pos" data-pane="menu">
+  <!-- MENU: search + category rail + item tiles -->
+  <section class="panel p-menu">
+    <div class="searchbox"><input id="search" type="search" placeholder="Search items…  (press / to focus, Enter adds a single match)" autocomplete="off" aria-label="Search items"></div>
+    <div id="tabs" class="tabs"></div>
+    <div id="menuGrid" class="tiles"></div>
+  </section>
+
+  <!-- CURRENT SALE -->
+  <section class="panel p-sale">
+    <div class="sale-head"><h3>Current sale</h3><button id="clearSale" type="button" class="btn ghost sm">Clear</button></div>
+    <div id="cartItems" class="cartlist"></div>
+    <div class="sale-foot">
+      <input id="custName" placeholder="Customer name (optional)">
+      <div id="svcChips" class="chips" role="radiogroup" aria-label="Dine-in or take-out">
+        <button type="button" data-v="dine-in" class="on" role="radio" aria-checked="true">🍽 Dine-in</button>
+        <button type="button" data-v="take-out" role="radio" aria-checked="false">🥡 Take-out</button>
+      </div>
+      <input type="hidden" id="service" value="dine-in">
+      <input id="tableNo" placeholder="Table number" maxlength="6" autocomplete="off" aria-label="Table number">
+      <label class="seniorbox"><input type="checkbox" id="seniorOn"><span>🧓 Senior citizen discount (<b id="seniorPct">20</b>%)</span></label>
+      <div id="seniorFields" hidden><input id="seniorId" placeholder="Senior citizen ID number" maxlength="30" autocomplete="off" aria-label="Senior citizen ID number"></div>
+      <div id="payChips" class="chips" role="radiogroup" aria-label="Payment method">
+        <button type="button" data-v="Cash" class="on" role="radio" aria-checked="true">Cash</button>
+        <button type="button" data-v="GCash" role="radio" aria-checked="false">GCash</button>
+      </div>
+      <div id="gcashBox" class="gcashbox" hidden>
+        <p class="gtitle">Pay to Hello Kaffi GCash</p>
+        <div class="gmain">
+          <div class="gqr">
+            <p id="gQrLoading" class="small muted">Loading QR code…</p>
+            <img id="gQr" hidden alt="Hello Kaffi GCash QR code" title="Tap to enlarge">
+            <p id="gNoQr" class="small muted" hidden>QR code not available. Use the number.</p>
+          </div>
+          <div class="ginfo">
+            <p class="gname"><b id="gName"></b></p>
+            <p class="gnum"><b id="gNum"></b></p>
+            <p class="gamt">Amount to receive<br><b id="gAmt">₱0.00</b></p>
+            <div class="glinks"><button type="button" id="gCopy" class="link">Copy number</button><a id="gSave" class="link" download="hello-kaffi-gcash-qr" hidden>Save QR</a></div>
+          </div>
+        </div>
+        <input id="gcashRef" placeholder="GCash reference number" inputmode="numeric" autocomplete="off" maxlength="40" aria-label="GCash reference number">
+        <p class="small muted gnote">Once the payment arrives, type the reference number from the customer's receipt.</p>
+      </div>
+      <input type="hidden" id="payment" value="Cash">
+      <div class="sale-pay">
+        <div id="discLines" class="disclines" hidden>
+          <div><span>Subtotal</span><span id="subTotal">₱0.00</span></div>
+          <div class="dl"><span>Senior discount</span><span id="discAmt">−₱0.00</span></div>
+        </div>
+        <div class="total"><span>Total</span><b id="cartTotal">₱0.00</b></div>
+        <button id="charge" class="btn big">Charge &amp; send to kitchen</button>
+        <p id="err" class="err" role="alert"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORDERS BOARD -->
+  <section class="panel p-orders">
+    <h3>Orders <small class="muted"></small></h3>
+    <div id="riderBar" class="riderbar" hidden></div>
+    <div id="board" class="board"></div>
+  </section>
+</div>
+<div id="toast" class="toast" role="status"></div>
+<script src="script.js"></script></body></html>

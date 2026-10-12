@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="hello-kitty.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#3d2b2e">
+<meta name="description" content="Hello Kaffi — best wings and pasta in town. Order ahead for pickup or delivery in Meycauayan.">
+<title>Hello Kaffi · Wings, pasta and good company</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Merriweather:wght@300;400&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="home.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="Hello Kaffi home"><span class="logo"><img src="hello-kitty.png" alt=""></span><b>Hello Kaffi</b></a>
+  <nav class="links" aria-label="Main">
+    <a href="menu.html#Unlimited%20promos" data-go>Special Offers</a>
+    <a href="#visit">About us</a>
+    <a class="btn" href="menu.html" data-go>See MENU &amp; Order</a>
+  </nav>
+</header>
+<main id="top">
+  <section class="hero">
+    <div class="bg">
+      <video id="vidBlur" class="bgv" src="kaffi-intro.mp4" poster="kaffi-intro-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
+      <video id="vid" class="sharp" src="kaffi-intro.mp4" poster="kaffi-intro-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="A look inside Hello Kaffi"></video>
+    </div>
+    <div class="copy" id="heroCopy">
+      <img class="kitty" src="hello-kitty.png" alt="Hello Kitty" width="84" height="63">
+      <h1 class="wordmark">Hello Kaffi</h1>
+      <p class="tag">Best wings and pasta in town</p>
+      <p class="lead">Wings, pasta and good company, since 2020. Pick your favorites and order ahead for pickup or delivery.</p>
+      <div class="actions">
+        <a id="start" class="start" href="menu.html" data-go>Start
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="more" href="#menu">See what's on the menu</a>
+      </div>
+    </div>
+    <div class="scroll-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
+    <button id="snd" class="snd" type="button" aria-label="Turn sound on" aria-pressed="false">
+      <svg class="off-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
+      <svg class="on-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>
+    </button>
+  </section>
+  <div class="ticker" aria-hidden="true"><div class="track"><span>Wings</span><i>&#9829;</i><span>Pasta</span><i>&#9829;</i><span>Rice Meals</span><i>&#9829;</i><span>Iced Coffee</span><i>&#9829;</i><span>Milk Teas</span><i>&#9829;</i><span>Unlimited Promos</span><i>&#9829;</i><span>Wings</span><i>&#9829;</i><span>Pasta</span><i>&#9829;</i><span>Rice Meals</span><i>&#9829;</i><span>Iced Coffee</span><i>&#9829;</i><span>Milk Teas</span><i>&#9829;</i><span>Unlimited Promos</span><i>&#9829;</i></div></div>
+<section class="menu" id="menu">
+  <h2 data-words>Favorites From Hello Kaffi</h2>
+  <div class="rule"></div>
+  <div class="cards">
+    <a class="tile" data-go data-reveal href="menu.html#Unlimited%20promos"><img class="photo" src="images/promos.jpg" alt=""><span class="cap">Unlimited Promos</span></a>
+    <a class="tile" data-go data-reveal href="menu.html#Wings"><img class="photo" src="images/wings.jpg" alt=""><span class="cap">Wings</span></a>
+    <a class="tile" data-go data-reveal href="menu.html#Pasta"><img class="photo" src="images/pasta.jpg" alt=""><span class="cap">Pasta</span></a>
+    <a class="tile" data-go data-reveal href="menu.html#Rice%20Meals"><img class="photo" src="images/rice-meals.jpg" alt=""><span class="cap">Rice Meals</span></a>
+    <a class="tile" data-go data-reveal href="menu.html#Iced%20Coffee"><img class="photo" src="images/iced-coffee.jpg" alt=""><span class="cap">Iced Coffee</span></a>
+    <a class="tile" data-go data-reveal href="menu.html#Milkteas"><img class="photo" src="images/milkteas.jpg" alt=""><span class="cap">Milk Teas</span></a>
+  </div>
+</section>
+<div class="about" id="visit">
+  <div class="about-in">
+    <div class="about-photos" data-reveal aria-hidden="true">
+      <img class="ap a" src="images/wings.jpg" alt="" loading="lazy">
+      <img class="ap b" src="images/pasta.jpg" alt="" loading="lazy">
+      <span class="ap-kitty"><img src="hello-kitty.png" alt=""></span>
+    </div>
+    <div class="about-text" data-reveal>
+      <h2>About us</h2>
+      <p>Hello Kaffi is a Hello Kitty-themed café in Meycauayan, Bulacan, serving the best wings and pasta in town since 2020.</p>
+      <p>From saucy wings, creamy pasta and rice meals to iced coffee, milk teas and unlimited promos, everything is made to share with family and friends. Dine in, pick up, or have it delivered to your door.</p>
+      <ul class="about-chips"><li>&#9829; Since 2020</li><li>Wings &amp; pasta</li><li>Pickup &amp; delivery</li><li>Dine-in</li></ul>
+    </div>
+  </div>
+</div>
+<footer class="foot">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="brand" href="#top" aria-label="Hello Kaffi home"><span class="logo"><img src="hello-kitty.png" alt=""></span><b>Hello Kaffi</b></a>
+      <p>Best wings and pasta in town, served every day in Meycauayan, Bulacan.</p>
+      <div class="social">
+        <a href="https://www.facebook.com/hellokaffi/?locale=tl_PH" target="_blank" rel="noopener noreferrer" aria-label="Hello Kaffi on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="https://www.tiktok.com/@joymorales0404" target="_blank" rel="noopener noreferrer" aria-label="Hello Kaffi on TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3v10.5a4.5 4.5 0 1 1-4.5-4.5"/><path d="M16 3a5 5 0 0 0 5 5"/></svg></a>
+      </div>
+    </div>
+    <nav class="foot-col" aria-label="Explore">
+      <h3>Explore</h3>
+      <a href="#menu">Menu highlights</a>
+      <a href="menu.html#Unlimited%20promos" data-go>Special Offers</a>
+      <a href="menu.html" data-go>Order now</a>
+      <a href="terms.html" target="_blank" rel="noopener noreferrer">Terms and Conditions</a>
+    </nav>
+    <div class="foot-col">
+      <h3>Come by</h3>
+      <p class="info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>297 Galas St, Malhacan, Meycauayan City, 3020 Bulacan, Philippines</span></p>
+      <p class="info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Open daily · 11:00 AM – 11:00 PM</span></p>
+      <p class="info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg><span><a href="tel:+639157278814">0915 727 8814</a></span></p>
+      <div class="dir">
+        <a class="btn" href="https://www.google.com/maps/dir/?api=1&destination=14.741319,120.968323" target="_blank" rel="noopener noreferrer">Get directions <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="alt" href="https://maps.apple.com/place?map=explore&place-id=IC9377C1B03A3FD7&address=297+Galas+St%2C+Malhacan%2C+Meycauayan+City%2C+3020+Bulacan%2C+Philippines&coordinate=14.741319%2C120.968323&name=Hello+Kaffi" target="_blank" rel="noopener noreferrer">Open in Apple Maps</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bar"><span>© <span id="yr">2026</span> Hello Kaffi. All rights reserved.</span><span>Meycauayan · Bulacan · Philippines</span></div>
+</footer>
+</main>
+<button id="toTop" class="to-top" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+</button>
+<script src="home.js"></script>
+<script>document.getElementById("yr").textContent=new Date().getFullYear();</script>
+</body>
+</html>

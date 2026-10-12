@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hello Kaffi · Admin</title><link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="/hello-kitty.png">
+<style>#menuEmpty{display:none;text-align:center;padding:18px 0;color:#9a7b84}</style>
+</head>
+<body data-page="admin">
+<header class="bar"><h2>Hello Kaffi · Admin</h2><span id="live" class="pill">Connecting…</span><span class="grow"></span><span id="who"></span><button id="logout" class="btn ghost sm">Sign out</button></header>
+<main class="admin">
+  <section class="stats" id="stats"></section>
+
+  <!-- SALES SUMMARY (bar graphs) -->
+  <section class="charts">
+    <div class="panel"><h3>Top sellers <small class="muted">(units sold today)</small></h3><div id="chartTop" class="bars h"></div></div>
+    <div class="panel"><h3>Orders by channel <small class="muted">(today)</small></h3><div id="chartChannel" class="bars v"></div></div>
+  </section>
+
+  <!-- CANCELLED ORDERS -->
+  <section class="panel cancels">
+    <div class="panel-head">
+      <h3>Cancelled orders <small class="muted">(by the day the order was placed)</small></h3>
+      <div id="cancelRange" class="seg-tabs" role="group" aria-label="Period">
+        <button type="button" data-r="today">Today</button><button type="button" data-r="7d" class="on">7 days</button><button type="button" data-r="all">All time</button>
+      </div>
+    </div>
+    <div id="cancelSummary" class="csum"></div>
+    <div class="cgrid">
+      <div><h4>Cancelled per day <small>(last 7 days)</small></h4><div id="chartCancelDays" class="bars v"></div></div>
+      <div><h4>Why they were cancelled</h4><div id="chartCancelWhy" class="bars h"></div></div>
+    </div>
+  </section>
+
+  <!-- DELIVERY: riders + assigning (admin only) -->
+  <section class="dispatch">
+    <div class="panel">
+      <div class="panel-head"><h3>Riders</h3><span id="riderSummary" class="muted small"></span></div>
+      <div id="riderList" class="riders"></div>
+      <form id="riderForm" class="riderform">
+        <input type="hidden" id="rId">
+        <input id="rName" placeholder="Rider name" aria-label="Rider name" required>
+        <input id="rPhone" placeholder="Phone number" aria-label="Rider phone" inputmode="tel">
+        <button class="btn" type="submit" id="rSave">Add rider</button>
+        <button class="btn ghost" type="button" id="rCancel" hidden>Cancel</button>
+      </form>
+      <p id="rErr" class="err" role="alert"></p>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h3>Delivery orders</h3><span class="muted small">Assign a free rider. The cashier sends them out.</span></div>
+      <div id="deliveryList" class="deliveries"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h3 id="formTitle">Add menu item</h3>
+    <form id="itemForm" class="itemform">
+      <input type="hidden" id="itemId">
+      <input id="iName" placeholder="Item name" aria-label="Item name" required>
+      <select id="iCat" aria-label="Category" required></select>
+      <input id="iPrice" type="number" min="0" step="0.01" placeholder="Price (₱)" aria-label="Price" required>
+      <input id="iStock" type="number" min="0" step="1" placeholder="Stock" aria-label="Stock" required>
+      <button class="btn" type="submit">Save item</button>
+      <button class="btn ghost" type="button" id="cancelEdit" hidden>Cancel</button>
+    </form>
+    <p id="err" class="err" role="alert"></p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h3>Menu &amp; live inventory</h3>
+      <div class="searchbar">
+        <input id="productSearch" type="search" placeholder="Search name, category, price or stock…" autocomplete="off" aria-label="Search products">
+        <button class="btn ghost sm" type="button" id="clearSearch">Clear</button>
+      </div>
+    </div>
+    <p id="searchCount" class="muted small"></p>
+    <div class="scroll tall"><table id="menuTable"></table></div>
+    <p id="menuEmpty">No products match your search.</p>
+  </section>
+
+  <!-- SALES REPORT: export to Excel / import back -->
+  <section class="panel report">
+    <div class="panel-head"><h3>Sales report <small class="muted">Export to the Sales-Report folder &middot; import it back anytime</small></h3></div>
+    <div class="reportbar">
+      <label>From <input type="date" id="expFrom"></label>
+      <label>To <input type="date" id="expTo"></label>
+      <button class="btn" id="expBtn" type="button">&#11015; Export CSV</button>
+      <label class="chk"><input type="checkbox" id="expClear" checked> Remove exported orders from sales</label>
+    </div>
+    <div class="reportbar imp">
+      <label class="fill"><span>Import from the <b>Sales-Report</b> folder</span>
+        <select id="impSelect" aria-label="Report file to import"><option value="">Loading…</option></select></label>
+      <button class="btn ghost" id="refreshFiles" type="button" title="Refresh the list">&#8635;</button>
+      <button class="btn" id="impBtn" type="button" disabled>&#11014; Import selected</button>
+    </div>
+    <p id="reportMsg" class="reportmsg" role="status"></p>
+    <details class="howto"><summary>How it works</summary>
+      <ul>
+        <li><b>Export:</b> leave the dates empty for every finished order, or pick a range. The file is saved into the <i>Sales-Report</i> folder (inside <i>pos-admin-portal</i>) and opens in Excel with one row per item sold. With <i>Remove exported orders from sales</i> ticked, those orders are erased from the admin sales once the file is safely saved. Orders still in progress are never exported or removed.</li>
+        <li><b>Excel tips:</b> filter the <i>Status</i> column to hide Cancelled orders before adding up sales. <i>Order Total</i> is filled only on the first row of each order, so a SUM never counts an order twice.</li>
+        <li><b>Import:</b> pick a file from the list. It only shows files in the <i>Sales-Report</i> folder, so copy an edited file (saved in Excel as <i>CSV UTF-8</i>) into that folder first. Importing brings the orders (and their sales) back. Orders already in the system are skipped, so importing twice never doubles your sales. Stock is not changed.</li>
+      </ul>
+    </details>
+  </section>
+
+  <section class="panel"><h3>Recent orders</h3><div class="scroll tall"><table id="orderTable"></table></div></section>
+</main>
+<div id="toast" class="toast" role="status"></div>
+<script src="script.js"></script>
+<script>
+/* Product search: filters #menuTable rows; re-applied after every re-render. */
+(function(){
+  var input=document.getElementById('productSearch'),clearBtn=document.getElementById('clearSearch'),
+      table=document.getElementById('menuTable'),empty=document.getElementById('menuEmpty'),
+      count=document.getElementById('searchCount'),applying=false;
+  function applyFilter(){
+    if(applying)return; applying=true;
+    var q=input.value.trim().toLowerCase(),total=0,shown=0;
+    table.querySelectorAll('tr').forEach(function(tr){
+      if(tr.querySelector('th'))return; total++;
+      var m=!q||tr.textContent.toLowerCase().indexOf(q)!==-1;
+      tr.style.display=m?'':'none'; if(m)shown++;
+    });
+    empty.style.display=(total>0&&shown===0)?'block':'none';
+    count.textContent=q?(shown+' of '+total+' products shown'):'';
+    applying=false;
+  }
+  input.addEventListener('input',applyFilter);
+  clearBtn.addEventListener('click',function(){input.value='';applyFilter();input.focus();});
+  input.addEventListener('keydown',function(e){if(e.key==='Escape'){input.value='';applyFilter();}});
+  new MutationObserver(applyFilter).observe(table,{childList:true,subtree:true});
+})();
+</script>
+</body></html>

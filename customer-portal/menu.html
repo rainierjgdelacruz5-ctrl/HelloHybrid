@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="hello-kitty.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+/* Guard: not signed in -> go to Login.html immediately, before anything is drawn. */
+try{if(!localStorage.getItem('hk_customer')){document.documentElement.style.visibility='hidden';location.replace('Login.html?next='+encodeURIComponent('menu.html'+location.hash));}}catch(e){}
+</script>
+<title>Hello Kaffi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+/* Page background (Hello Kitty stationery). Wide image for laptops/tablets, original artwork for tall/phone screens. */
+body::before{content:"";position:fixed;top:0;right:0;bottom:0;left:0;z-index:-1;background:#fdf6f6 url(bg-wide.jpg) center/cover no-repeat}
+@media (max-aspect-ratio:1/1){body::before{background-image:url(bg-portrait.jpg)}}
+.top{background:#fff8f8e8}
+.kitty-ico{width:1.35em;height:auto;vertical-align:-.25em}
+.kitty-sm{width:40px;height:auto;vertical-align:-5px;margin-right:8px}
+.kitty{display:block;width:120px;height:auto;margin:0 auto 2px;filter:drop-shadow(0 4px 6px #f0458a26)}
+.tabs{background:none}
+</style>
+<style>
+/* Menu search (customer) */
+.menu-controls{position:sticky;top:57px;z-index:4;background:#fdf7f7e6;backdrop-filter:blur(6px);padding-top:10px}
+.menu-controls .tabs{position:static;background:none;padding:10px 2px 12px}
+.searchwrap input{width:100%;padding:12px 20px;border:2px solid var(--line);border-radius:999px;font:inherit;background:#fff}
+.searchwrap input:focus{border-color:var(--pink)}
+.results{color:var(--soft);font-size:13.5px;margin:6px 4px 0}
+.terms-check{display:flex;gap:8px;align-items:center;justify-content:center;margin:14px 0 6px;font-size:14px}
+.terms-check a{color:var(--pink)}
+.google-btn:disabled{opacity:.5;cursor:not-allowed}
+#address.invalid,#proof.invalid{border-color:#dc2626!important;box-shadow:0 0 0 3px #dc262633}
+.card .cat{font-size:11px;color:var(--leaf-d);font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+</style>
+</head>
+<body>
+<section id="login" class="login">
+  <div class="login-card">
+    <img class="kitty" src="hello-kitty.png" alt="Hello Kitty" width="120" height="90">
+    <h1 class="wordmark">Hello Kaffi</h1>
+    <p class="tag">Best wings and pasta in town</p>
+    <p>Sign in with Google to see the menu and order ahead.</p>
+    <label class="terms-check"><input type="checkbox" id="agreeTerms"> I have read the <a href="terms.html" target="_blank" rel="noopener">Terms and Conditions</a></label>
+    <p id="termsErr" class="err" role="alert"></p>
+    <button id="googleBtn" class="google-btn" disabled><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</button>
+    <p class="muted small" style="text-align:center;margin-top:10px; color: pink;"><a href="../index.html" style="color: pink; text-decoration: none;">← Back to Hello Kaffi</a></p>
+  </div>
+</section>
+
+<div id="app" hidden>
+  <header class="top">
+    <h2 class="wordmark sm"><img class="kitty-sm" src="hello-kitty.png" alt="" width="40" height="30">Hello Kaffi</h2>
+    <nav>
+      <button data-view="menu" class="active">Menu</button>
+      <button data-view="orders">My orders</button>
+    </nav>
+    <div class="who"><span id="userName"></span><button id="logout" class="link">Sign out</button></div>
+  </header>
+
+  <main>
+    <section id="view-menu">
+      <div class="hero"><h1 class="wordmark">Hello Kaffi</h1><p>Wings, pasta and good company, since 2020.</p>
+        <div class="hero-chips"><span>🛵 Pickup &amp; delivery</span><span>🍗 Wings &amp; pasta</span><span>♥ Since 2020</span></div></div>
+      <div id="best" class="best" hidden>
+        <div class="best-head"><h3>Hello Kaffi Favorites</h3><span>What everyone orders</span></div>
+        <div id="bestRow" class="best-row"></div>
+      </div>
+      <div class="menu-controls">
+        <div class="searchwrap"><input id="search" type="search" placeholder="Search the menu (e.g. wings, latte, 399)…" autocomplete="off" aria-label="Search menu items"></div>
+        <div id="tabs" class="tabs"></div>
+      </div>
+      <div id="catNote"></div>
+      <div id="menuGrid" class="grid"></div>
+    </section>
+    <section id="view-orders" hidden>
+      <h3>Track your orders</h3>
+      <div id="orderList"></div>
+    </section>
+  </main>
+
+  <button id="cartFab" class="fab" aria-label="Open cart">Cart <b id="cartCount">0</b></button>
+
+  <aside id="cart" class="drawer" hidden>
+    <div class="drawer-head"><h3>Your cart</h3><button id="closeCart" class="link">Close</button></div>
+    <div id="cartItems"></div>
+    <div class="checkout">
+      <div class="seg"><label><input type="radio" name="otype" value="pickup" checked> Pickup</label><label><input type="radio" name="otype" value="delivery"> Delivery</label></div>
+      <input id="address" placeholder="Delivery address" hidden>
+      <input id="note" placeholder="Wing flavor or special requests">
+      <select id="payment"><option value="COD">Pay on pickup/delivery</option><option value="GCash">GCash (upload proof of payment)</option></select>
+      <div id="proofBox" hidden>
+        <p class="small">Scan the QR code (or send to the number) above and pay the exact amount, then enter the reference number and upload a screenshot of your receipt. The cashier checks it before your order is accepted.</p>
+        <input id="gcashRef" placeholder="GCash reference number" inputmode="numeric" autocomplete="off">
+        <input id="proof" type="file" accept="image/png,image/jpeg,image/webp">
+        <img id="proofPreview" alt="Payment proof preview" hidden style="max-width:100%;max-height:180px;border-radius:12px;margin-top:8px">
+      </div>
+      <div class="total"><span>Total</span><b id="cartTotal">₱0.00</b></div>
+      <button id="placeOrder" class="primary">Place order</button>
+      <p id="err" class="err" role="alert"></p>
+    </div>
+  </aside>
+
+
+
+</div>
+
+<div id="toast" class="toast" role="status"></div>
+<script type="module">
+  import { signInWithPopup } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+  import { auth, googleProvider } from "./firebase-config.js";
+  // script.js calls this when "Continue with Google" is clicked; the Node server verifies the token.
+  window.googleSignIn = async () => (await signInWithPopup(auth, googleProvider)).user.getIdToken();
+</script>
+
+<script src="script.js"></script>
+<script src="gcash.js"></script>
+</body>
+</html>

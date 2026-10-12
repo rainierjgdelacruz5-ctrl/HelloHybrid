@@ -1,0 +1,17 @@
+{
+  "name": "hello-kaffi-system",
+  "version": "1.0.0",
+  "private": true,
+  "main": "backend-sync/server.js",
+  "scripts": {
+    "start": "node backend-sync/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.7",
+    "express": "^4.19.2",
+    "firebase-admin": "^12.1.0",
+    "helmet": "^8.3.0",
+    "nodemailer": "^10.0.16",
+    "ws": "^8.17.0"
+  }
+}

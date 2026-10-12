@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="hello-kitty.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#3d2b2e">
+<title>Log in or create an account · Hello Kaffi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#f0458a;--pink-d:#d1296f;--cocoa:#3d2b2e;--line:#f6d3e0;--soft:#8b7478;--leaf-d:#5f8a2e;--err:#b91c1c;--nav-h:72px}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.55 Poppins,system-ui,sans-serif;color:var(--cocoa);background:#fdf6f6;transition:opacity .28s ease;min-height:100vh;min-height:100dvh}
+body.leaving{opacity:0}
+body::before{content:"";position:fixed;top:0;right:0;bottom:0;left:0;z-index:-1;background:#fdf6f6 url(bg-wide.jpg) center/cover no-repeat}
+@media (max-aspect-ratio:1/1){body::before{background-image:url(bg-portrait.jpg)}}
+h1,h2,p{margin:0}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+
+.nav{position:sticky;top:0;z-index:10;height:var(--nav-h);background:var(--cocoa);display:flex;align-items:center;padding:0 clamp(14px,3vw,30px);box-shadow:0 2px 14px #0003}
+.brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none}
+.brand .logo{width:46px;height:46px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none}
+.brand .logo img{width:34px;height:auto;display:block}
+.brand b{font-family:Allura,cursive;font-weight:400;font-size:36px;line-height:1}
+.back{margin-left:auto;color:#ffb3d1;text-decoration:none;font-size:13px;font-weight:600}.back:hover{color:#fff}
+
+main{display:grid;place-items:start center;padding:28px 16px 48px}
+.card{width:100%;max-width:440px;background:#fffffff2;border:1px solid var(--line);border-radius:22px;padding:28px clamp(18px,5vw,32px) 30px;box-shadow:0 14px 0 #fdeaf1,0 26px 50px #f0458a26}
+.card[hidden],section[hidden]{display:none}
+.hello{display:block;width:64px;height:auto;margin:0 auto 4px}
+h1{font-family:Allura,cursive;font-weight:400;font-size:52px;line-height:1.05;color:var(--pink);text-align:center}
+.sub{text-align:center;color:var(--soft);margin:2px 0 20px}
+h2{font-size:19px;font-weight:600;text-align:center}
+
+label{display:block;font-size:13px;font-weight:600;margin:14px 0 5px}
+.field{position:relative}
+input[type=text],input[type=password],input[type=email]{width:100%;font:inherit;font-size:16px;color:var(--cocoa);background:#fff;border:2px solid var(--line);border-radius:10px;padding:11px 14px;transition:border-color .15s}
+input:focus{outline:none;border-color:var(--pink)}
+input.bad{border-color:var(--err)}
+.field input[type=password],.field input.pw{padding-right:64px}
+.eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--soft);font:600 12px Poppins,sans-serif;padding:8px 10px;cursor:pointer;border-radius:8px}.eye:hover{color:var(--pink)}
+.hint{font-size:12px;color:var(--soft);margin-top:4px}
+
+.primary{width:100%;margin-top:20px;border:0;border-radius:999px;background:var(--pink);color:#fff;font:600 16px Poppins,sans-serif;padding:13px 20px;cursor:pointer;box-shadow:0 8px 20px #f0458a44;transition:background .15s,transform .15s}
+.primary:hover{background:var(--pink-d)}.primary:active{transform:scale(.98)}
+.primary:disabled{opacity:.6;cursor:wait}
+.ghost{width:100%;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:10px;border:2px solid var(--line);border-radius:999px;background:#fff;color:var(--cocoa);font:600 14px Poppins,sans-serif;padding:11px 18px;cursor:pointer}
+.ghost:hover{border-color:var(--pink)}.ghost svg{width:18px;height:18px}
+.link{border:0;background:none;color:var(--pink);font:600 14px Poppins,sans-serif;cursor:pointer;padding:4px;text-decoration:underline}.link:disabled{color:var(--soft);text-decoration:none;cursor:default}
+
+.msg{margin-top:14px;border-radius:10px;padding:10px 14px;font-size:13.5px}
+.msg:empty{display:none}
+.msg.err{background:#fee2e2;color:var(--err)}
+.msg.ok{background:#f3f9e8;color:var(--leaf-d);border:1px solid #d8e9b8}
+
+.or{display:flex;align-items:center;gap:12px;margin:16px 0 0;color:var(--soft);font-size:12px}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* "Create an account" link area under the login block */
+.create{margin-top:26px;padding-top:20px;border-top:2px dashed var(--line);text-align:center;color:var(--soft)}
+.create .link{font-size:15px}
+.terms{display:flex;align-items:flex-start;gap:9px;margin:16px 0 0;font-size:13px;font-weight:400;color:var(--cocoa);cursor:pointer}
+.terms input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--pink);flex:none;cursor:pointer}
+.terms a{color:var(--pink);font-weight:600}
+[data-gate][aria-disabled="true"]{opacity:.45;cursor:not-allowed;box-shadow:none}
+.primary[data-gate][aria-disabled="true"]:hover{background:var(--pink)}
+.ghost[data-gate][aria-disabled="true"]:hover{border-color:var(--line)}
+
+/* Terms reminder popup */
+.popup{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(61,43,46,.5);backdrop-filter:blur(3px)}
+.popup.show{display:flex}
+.popup-box{width:100%;max-width:360px;background:#fff;border:2px solid var(--line);border-radius:24px;padding:26px 24px 24px;text-align:center;box-shadow:0 14px 0 #fdeaf1,0 24px 50px #f0458a40;animation:popIn .25s ease}
+.popup-box img{width:56px;height:auto;display:block;margin:0 auto 4px}
+.popup-box h3{margin:0 0 6px;font-family:Allura,cursive;font-weight:400;font-size:38px;line-height:1.1;color:var(--pink)}
+.popup-box p{color:var(--soft);font-size:14px;margin-bottom:6px}
+.popup-box p b{color:var(--cocoa)}
+.popup-box .primary{margin-top:16px}
+.popup-box .link{display:inline-block;margin-top:8px;text-decoration:none;font-weight:500;font-size:13px}
+@keyframes popIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.terms.bad{animation:shake .3s}
+.terms.bad{color:var(--err)}
+.terms.bad input{outline:2px solid var(--err);outline-offset:2px}
+
+/* OTP */
+.otp{display:flex;justify-content:center;gap:8px;margin:22px 0 4px}
+.otp input{width:46px;height:56px;border:2px solid var(--line);background:#fff;color:var(--cocoa);text-align:center;font:600 24px Poppins,sans-serif;padding:0;border-radius:12px}
+.center{text-align:center}
+.mt{margin-top:14px}
+@media(max-width:380px){.otp{gap:5px}.otp input{width:40px;height:50px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="index.html" aria-label="Hello Kaffi home"><span class="logo"><img src="hello-kitty.png" alt=""></span><b>Hello Kaffi</b></a>
+  <a class="back" href="index.html">&larr; Back to home</a>
+</header>
+
+<main>
+  <!-- ========== LOGIN (top) + CREATE ACCOUNT (bottom) ========== -->
+  <div class="card" id="viewAuth">
+    <img class="hello" src="hello-kitty.png" alt="">
+    <h1>Welcome back</h1>
+    <p class="sub">Log in to order your favorites.</p>
+
+    <section id="loginBox" aria-labelledby="loginTitle">
+      <h2 id="loginTitle" class="sr" style="position:absolute;left:-9999px">Log in</h2>
+      <div class="msg ok" id="loginOk" role="status"></div>
+      <form id="loginForm" novalidate>
+        <label for="lUser">Username</label>
+        <input id="lUser" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+        <label for="lPass">Password</label>
+        <div class="field">
+          <input id="lPass" type="password" autocomplete="current-password" required>
+          <button type="button" class="eye" data-eye="lPass" aria-label="Show password">Show</button>
+        </div>
+        <label class="terms" id="loginTermsLbl"><input type="checkbox" id="loginTerms"><span>I have read and agree to the <a href="terms.html?from=login" target="_blank" rel="noopener">Terms and Conditions</a></span></label>
+        <button class="primary" id="loginBtn" type="submit" data-gate="loginTerms" aria-disabled="true">Log in</button>
+        <div class="msg err" id="loginErr" role="alert"></div>
+      </form>
+      <div class="or">or</div>
+      <button class="ghost" id="googleBtn" type="button" data-gate="loginTerms" aria-disabled="true">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Continue with Google
+      </button>
+      <div class="msg err" id="googleErr" role="alert"></div>
+    </section>
+
+    <p class="create">New here? <button class="link" id="toRegister" type="button">Create an account</button></p>
+  </div>
+
+  <!-- ========== CREATE ACCOUNT (opens from the "Create an account" link) ========== -->
+  <div class="card" id="viewReg" hidden>
+    <img class="hello" src="hello-kitty.png" alt="">
+    <h1>Create account</h1>
+    <p class="sub">We'll email a code to your Gmail to confirm it's you.</p>
+    <form id="regForm" novalidate>
+        <label for="rName">Full name</label>
+        <input id="rName" type="text" autocomplete="name" maxlength="60" required>
+        <label for="rUser">Username</label>
+        <input id="rUser" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="20" required>
+        <p class="hint">3-20 characters: letters, numbers, dot or underscore.</p>
+        <label for="rPass">Password</label>
+        <div class="field">
+          <input id="rPass" type="password" autocomplete="new-password" maxlength="72" required>
+          <button type="button" class="eye" data-eye="rPass" aria-label="Show password">Show</button>
+        </div>
+        <p class="hint">At least 8 characters, with a letter and a number.</p>
+        <label for="rMail">Google account (Gmail)</label>
+        <input id="rMail" type="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="yourname@gmail.com" required>
+        <label class="terms" id="regTermsLbl"><input type="checkbox" id="regTerms"><span>I have read and agree to the <a href="terms.html?from=register" target="_blank" rel="noopener">Terms and Conditions</a></span></label>
+        <button class="primary" id="regBtn" type="submit" data-gate="regTerms" aria-disabled="true">Register</button>
+        <div class="msg err" id="regErr" role="alert"></div>
+      </form>
+    <p class="create">Already have an account? <button class="link" id="toLogin" type="button">Log in</button></p>
+  </div>
+
+  <!-- ========== OTP CONFIRMATION ========== -->
+  <div class="card" id="viewOtp" hidden>
+    <img class="hello" src="hello-kitty.png" alt="">
+    <h1>Check your Gmail</h1>
+    <p class="sub">We sent a 6-digit code to <b id="otpMail"></b>.<br>It expires in 10 minutes.</p>
+    <form id="otpForm" novalidate>
+      <div class="otp" role="group" aria-label="6-digit verification code">
+        <input type="text" inputmode="numeric" autocomplete="one-time-code" aria-label="Digit 1">
+        <input type="text" inputmode="numeric" aria-label="Digit 2">
+        <input type="text" inputmode="numeric" aria-label="Digit 3">
+        <input type="text" inputmode="numeric" aria-label="Digit 4">
+        <input type="text" inputmode="numeric" aria-label="Digit 5">
+        <input type="text" inputmode="numeric" aria-label="Digit 6">
+      </div>
+      <button class="primary" id="otpBtn" type="submit">Confirm</button>
+      <div class="msg err" id="otpErr" role="alert"></div>
+    </form>
+    <p class="center mt"><button class="link" id="resendBtn" type="button" disabled>Resend code</button></p>
+    <p class="center"><button class="link" id="changeMail" type="button">Use a different email</button></p>
+    <p class="hint center">Can't find it? Check your spam folder.</p>
+  </div>
+</main>
+
+<div class="popup" id="termsPopup" role="alertdialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="popupText">
+  <div class="popup-box">
+    <img src="hello-kitty.png" alt="">
+    <h3 id="popupTitle">One more step!</h3>
+    <p id="popupText">Please tick the box <b>"I have read and agree to the Terms and Conditions"</b> first, then try again.</p>
+    <button class="primary" id="popupOk" type="button">Okay, got it</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  // Same API rules as script.js: VS Code Live Server (5500) talks to the Node server on 3000.
+  var API = location.port === '5500' ? 'http://localhost:3000' : '';
+  // Only ever send people back into the ordering page (never to an outside address).
+  var next = (function () {
+    var n = new URLSearchParams(location.search).get('next') || '';
+    return /^menu\.html(#[\w%.\-]*)?$/.test(n) ? n : 'menu.html';
+  })();
+
+  function go() { document.body.classList.add('leaving'); setTimeout(function () { location.href = next; }, 260); }
+  window.addEventListener('pageshow', function () { document.body.classList.remove('leaving'); });
+
+  // Already signed in? Straight to the menu. (A stale token is cleared by script.js and sent back here.)
+  try { if (JSON.parse(localStorage.getItem('hk_customer') || 'null')) { go(); return; } } catch (e) {}
+
+  function api(path, body) {
+    return fetch(API + '/api' + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) {
+        if (!r.ok) throw new Error(d.error || 'Something went wrong. Please try again.');
+        return d;
+      }); }, function () { throw new Error('Cannot reach the server. Make sure "npm start" is running.'); });
+  }
+  function gated(btn) { return !!btn.dataset.gate && !document.getElementById(btn.dataset.gate).checked; }
+  function syncGates() { document.querySelectorAll('[data-gate]').forEach(function (b) { b.setAttribute('aria-disabled', gated(b) ? 'true' : 'false'); }); }
+  function busy(btn, on, label) { if (on) btn.dataset.busy = '1'; else delete btn.dataset.busy; btn.disabled = on; if (label) btn.textContent = on ? label : btn.dataset.label; }
+  ['loginBtn', 'regBtn', 'otpBtn'].forEach(function (id) { var b = document.getElementById(id); b.dataset.label = b.textContent; });
+  function say(el, text) { el.textContent = text || ''; }
+  function mask(e) { var p = e.split('@'); return p[0].charAt(0) + '***@' + p[1]; }
+  function saveSession(s) { localStorage.setItem('hk_customer', JSON.stringify(s)); go(); }
+
+  // Show / hide password
+  document.querySelectorAll('[data-eye]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var i = document.getElementById(b.dataset.eye), show = i.type === 'password';
+      i.type = show ? 'text' : 'password'; b.textContent = show ? 'Hide' : 'Show';
+      b.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    });
+  });
+
+  // Terms and Conditions must be ticked before logging in / registering.
+  var popup = $('#termsPopup'), popupFocus = null;
+  function showTermsPopup(box) {
+    popupFocus = $(box); popup.classList.add('show'); $('#popupOk').focus();
+  }
+  function closeTermsPopup() {
+    popup.classList.remove('show');
+    if (popupFocus) { popupFocus.scrollIntoView({ block: 'center' }); popupFocus.focus(); }
+  }
+  $('#popupOk').addEventListener('click', closeTermsPopup);
+  popup.addEventListener('click', function (e) { if (e.target === popup) closeTermsPopup(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && popup.classList.contains('show')) closeTermsPopup(); });
+  // Returns true if the box is ticked; otherwise highlights it, shows the popup and returns false.
+  function termsOk(box, lbl) {
+    var ok = $(box).checked;
+    $(lbl).classList.remove('bad');
+    if (!ok) { void $(lbl).offsetWidth; $(lbl).classList.add('bad'); showTermsPopup(box); }
+    return ok;
+  }
+  ['#loginTerms', '#regTerms'].forEach(function (id) {
+    $(id).addEventListener('change', function () { $(id + 'Lbl').classList.remove('bad'); syncGates(); });
+  });
+  syncGates();
+
+  // Switch between the login window and the create-account window.
+  function show(id) {
+    ['#viewAuth', '#viewReg', '#viewOtp'].forEach(function (v) { $(v).hidden = v !== id; });
+    window.scrollTo(0, 0);
+  }
+  $('#toRegister').addEventListener('click', function () { say($('#loginErr')); say($('#googleErr')); say($('#loginOk')); show('#viewReg'); $('#rName').focus(); });
+  $('#toLogin').addEventListener('click', function () { say($('#regErr')); show('#viewAuth'); $('#lUser').focus(); });
+
+  /* ---------------- LOGIN ---------------- */
+  $('#loginForm').addEventListener('submit', function (e) {
+    e.preventDefault(); say($('#loginErr')); say($('#loginOk'));
+    if (!termsOk('#loginTerms', '#loginTermsLbl')) return;
+    var u = $('#lUser').value.trim(), p = $('#lPass').value;
+    if (!u || !p) return say($('#loginErr'), 'Please enter your username and password.');
+    busy($('#loginBtn'), true, 'Logging in…');
+    api('/auth/customer', { username: u, password: p })
+      .then(saveSession)
+      .catch(function (x) { say($('#loginErr'), x.message); busy($('#loginBtn'), false, true); });
+  });
+
+  /* ---------------- GOOGLE SIGN-IN (unchanged behaviour, Firebase) ---------------- */
+  $('#googleBtn').addEventListener('click', function () {
+    say($('#googleErr'));
+    if (!termsOk('#loginTerms', '#loginTermsLbl')) return;
+    Promise.all([import('./firebase-config.js'), import('https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js')])
+      .then(function (m) { return m[1].signInWithPopup(m[0].auth, m[0].googleProvider); })
+      .then(function (cred) { return cred.user.getIdToken(); })
+      .then(function (idToken) { return api('/auth/google', { idToken: idToken }); })
+      .then(saveSession)
+      .catch(function (x) { say($('#googleErr'), x.code === 'auth/popup-closed-by-user' ? 'Sign-in cancelled.' : (x.message || 'Google sign-in failed.')); });
+  });
+
+  /* ---------------- REGISTER -> OTP ---------------- */
+  var pendingMail = '', timer = null;
+
+  function field(id, bad) { $(id).classList.toggle('bad', !!bad); return bad; }
+  $('#regForm').addEventListener('submit', function (e) {
+    e.preventDefault(); say($('#regErr'));
+    if (!termsOk('#regTerms', '#regTermsLbl')) return;
+    var name = $('#rName').value.trim(), user = $('#rUser').value.trim(), pass = $('#rPass').value, mail = $('#rMail').value.trim().toLowerCase();
+    var problems = [
+      [field('#rName', name.length < 2), 'Please enter your full name.'],
+      [field('#rUser', !/^[A-Za-z0-9_.]{3,20}$/.test(user)), 'Username must be 3-20 characters: letters, numbers, dot or underscore.'],
+      [field('#rPass', pass.length < 8 || !/[a-z]/i.test(pass) || !/\d/.test(pass)), 'Password needs at least 8 characters with a letter and a number.'],
+      [field('#rMail', !/^[a-z0-9._%+-]+@(gmail|googlemail)\.com$/.test(mail)), 'Please enter a valid Gmail address (yourname@gmail.com).']
+    ].filter(function (p) { return p[0]; });
+    if (problems.length) return say($('#regErr'), problems[0][1]);
+    busy($('#regBtn'), true, 'Sending code…');
+    api('/auth/register', { fullName: name, username: user, password: pass, email: mail })
+      .then(function (d) { pendingMail = d.email; showOtp(d.resendIn || 60); })
+      .catch(function (x) { say($('#regErr'), x.message); })
+      .then(function () { busy($('#regBtn'), false, true); });
+  });
+  document.querySelectorAll('#regForm input').forEach(function (i) { i.addEventListener('input', function () { i.classList.remove('bad'); }); });
+
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.otp input'));
+  function code() { return boxes.map(function (b) { return b.value; }).join(''); }
+  function fill(from, digits) {
+    digits.split('').slice(0, 6 - from).forEach(function (d, j) { boxes[from + j].value = d; });
+    boxes[Math.min(from + digits.length, 5)].focus();
+    if (code().length === 6) $('#otpForm').requestSubmit();
+  }
+  boxes.forEach(function (b, i) {
+    b.addEventListener('input', function () {
+      var d = b.value.replace(/\D/g, '');
+      b.value = d.slice(-1);
+      if (d.length > 1) fill(i, d);                 // autofill / paste of the whole code
+      else if (d && i < 5) boxes[i + 1].focus(), code().length === 6 && $('#otpForm').requestSubmit();
+      else if (d && code().length === 6) $('#otpForm').requestSubmit();
+    });
+    b.addEventListener('keydown', function (e) { if (e.key === 'Backspace' && !b.value && i > 0) boxes[i - 1].focus(); });
+    b.addEventListener('paste', function (e) { e.preventDefault(); fill(i, (e.clipboardData.getData('text') || '').replace(/\D/g, '')); });
+    b.addEventListener('focus', function () { b.select(); });
+  });
+
+  function showOtp(secs) {
+    show('#viewOtp');
+    $('#otpMail').textContent = mask(pendingMail); say($('#otpErr'));
+    boxes.forEach(function (b) { b.value = ''; }); boxes[0].focus(); countdown(secs);
+  }
+  function countdown(secs) {
+    clearInterval(timer); var b = $('#resendBtn'); b.disabled = true;
+    (function tick() { if (secs <= 0) { clearInterval(timer); b.disabled = false; b.textContent = 'Resend code'; return; } b.textContent = 'Resend code in ' + secs + 's'; secs--; })();
+    timer = setInterval(function () {
+      if (secs <= 0) { clearInterval(timer); b.disabled = false; b.textContent = 'Resend code'; return; }
+      b.textContent = 'Resend code in ' + secs + 's'; secs--;
+    }, 1000);
+  }
+
+  $('#otpForm').addEventListener('submit', function (e) {
+    e.preventDefault(); say($('#otpErr'));
+    if ($('#otpBtn').disabled) return;
+    var c = code();
+    if (c.length !== 6) return say($('#otpErr'), 'Enter the 6-digit code from your email.');
+    busy($('#otpBtn'), true, 'Checking…');
+    api('/auth/register/verify', { email: pendingMail, otp: c })
+      .then(function (d) {
+        // Verified: back to the login window with the new username filled in.
+        clearInterval(timer);
+        show('#viewAuth');
+        $('#regForm').reset(); $('#lUser').value = d.username; $('#lPass').value = '';
+        $('#loginTerms').checked = true;           // they already agreed while registering
+        syncGates();
+        say($('#loginOk'), 'Email confirmed! Your account is ready. Please log in.');
+        window.scrollTo(0, 0); $('#lPass').focus();
+      })
+      .catch(function (x) { say($('#otpErr'), x.message); boxes.forEach(function (b) { b.value = ''; }); boxes[0].focus(); })
+      .then(function () { busy($('#otpBtn'), false, true); });
+  });
+
+  $('#resendBtn').addEventListener('click', function () {
+    say($('#otpErr')); $('#resendBtn').disabled = true;
+    api('/auth/register/resend', { email: pendingMail })
+      .then(function (d) { countdown(d.resendIn || 60); boxes.forEach(function (b) { b.value = ''; }); boxes[0].focus(); })
+      .catch(function (x) { say($('#otpErr'), x.message); $('#resendBtn').disabled = false; });
+  });
+  $('#changeMail').addEventListener('click', function () {
+    clearInterval(timer); show('#viewReg'); $('#rMail').focus();
+  });
+
+  // Opened as Login.html?view=register (e.g. coming back from the Terms page) -> show the register window.
+  if (new URLSearchParams(location.search).get('view') === 'register') show('#viewReg');
+})();
+</script>
+</body>
+</html>
